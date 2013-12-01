@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="59" height="50" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="tmw_desert_spacing" tilewidth="32" tileheight="32" spacing="1" margin="1">
+  <image source="tmw_desert_spacing.png" width="265" height="199"/>
+  <tile id="0">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="8">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="9">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="10">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="16">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="17">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="18">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="19">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="20">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="24">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="25">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="26">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="27">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="28">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="31">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="32">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="33">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="34">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="35">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="36">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="40">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="41">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="42">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="43">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+  <tile id="44">
+   <properties>
+    <property name="walkable" value="NO"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="49" name="meta_tiles" tilewidth="32" tileheight="32" spacing="1" margin="1">
+  <image source="meta_tiles.png" width="67" height="34"/>
+  <tile id="0">
+   <properties>
+    <property name="Collidable" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Background" width="59" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztmldvwyAQgGkjdcRSV7qH46hpkq70//+7niUjUcrBYY7hOA/fkyXgM8N3Z6ZCiOmIuAauBsyNw0d9XgENsAHWHUfAMXAC1IVzqbnNgFVH63TqcD0DzoGLAlyorAzors/AYcekc70F7oB7YNuR28XFWgFzVVG9KUwc/W8IcHiqe47q6kvlGENDgMNV3XPSVb5L1TXkHJ4xjTUUdc/ZXCvBu55ysRV/9yvmmnucsRiTa+1wLSGOaIT53PphdvWJIx6AxwCePF0557Xd3+qZ5mrnHfjoyRvwmtGVEyx2mHcsdsjVxphc673rP1cO373rOFzbNtVzctddW0JjA1t80MeV451iriGxgeRzIPOKfftTr+G+mGJ5LH+NUR9J6WqK5XXXeSK/2K6mWL70b44vW4HXO6muMXPZGPNqguoasyZekqtvLjt015hjKMk1NqW7+sSQrlhRd22IxHLV3b6BpQirJVHnlcPTx3VhcDPFu/q/QMr6pLianGO6+uwpTleftc3pKh2ozqldbb6x5lXS5oau3M6nbcr85XLlmvvUrl8ivAYxBFdXnYJag6C42nw4XXP8Zza5xuinVNeQeg+Wf6ZyteW/0lXWQ0JdsfwzlSvWf+slv0tcrlj+GdtV1kOw/huF0Hqe665ZznswjeB1dWGrmR4I2n21vmOTjno/k57t+bjq9/JelGcYvnf5TOj9cLRJ6WcM/AIYczmg
+  </data>
+ </layer>
+ <objectgroup name="Objects" width="59" height="50">
+  <object name="SpawnPoint" x="503" y="1166"/>
+ </objectgroup>
+ <layer name="Meta" width="59" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztlkESxCAIBP2S///cXrNUNCIwIjBVnCQMHYyxt9Z6Rei4VV8skVi/FHG+I2Xa+yhWD+8q81wjq1hjyjurZl9arFZnW7Hq9IhUJlbqP1vX9jp1NhXr/5pGb8WK1SnWTtYQOsmqGZweuGtc3cJqOddRroVQZ4X3s8nCx8PdCeWTca4nVKx2PsWKUbHa+XD9NO9PNEfzTjbreTXPknXFe0dS1tX6kpxO8lBz3a0vzXnmSfdPFFbO3pT2s/Mcpzbye7WQV1bNfwCtrZ07etYT66wegtVSb6yWPsWKURbWN+9MrAgvNCvae+YnvZNxva25V3kq7owfr3yZ5Q==
+  </data>
+ </layer>
+</map>
