@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		7F0B285518463A16001394A6 /* meta_tiles.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F0B285418463A16001394A6 /* meta_tiles.png */; };
+		7F0FC531184C059300EFCFE0 /* Zombie.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0FC530184C059300EFCFE0 /* Zombie.m */; };
+		7F0FC533184C110500EFCFE0 /* zombie.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F0FC532184C110500EFCFE0 /* zombie.png */; };
+		7F0FC536184C573500EFCFE0 /* GameOverLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0FC535184C573500EFCFE0 /* GameOverLayer.m */; };
+		7F0FC538184C5A3900EFCFE0 /* projectile.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F0FC537184C5A3900EFCFE0 /* projectile.png */; };
+		7F0FC53B184C5B7C00EFCFE0 /* Projectile.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F0FC53A184C5B7C00EFCFE0 /* Projectile.m */; };
 		7F3B49FE1847FBB000E47114 /* libChipmunkPro-iPhone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F3B49FC1847FBB000E47114 /* libChipmunkPro-iPhone.a */; };
 		7FF5DADA1845A59400D3CFD6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FF5DAD91845A59400D3CFD6 /* QuartzCore.framework */; };
 		7FF5DADC1845A59400D3CFD6 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FF5DADB1845A59400D3CFD6 /* OpenGLES.framework */; };
@@ -160,6 +165,14 @@
 
 /* Begin PBXFileReference section */
 		7F0B285418463A16001394A6 /* meta_tiles.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = meta_tiles.png; sourceTree = "<group>"; };
+		7F0FC52F184C059300EFCFE0 /* Zombie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Zombie.h; sourceTree = "<group>"; };
+		7F0FC530184C059300EFCFE0 /* Zombie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Zombie.m; sourceTree = "<group>"; };
+		7F0FC532184C110500EFCFE0 /* zombie.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = zombie.png; path = Resources/zombie.png; sourceTree = "<group>"; };
+		7F0FC534184C573400EFCFE0 /* GameOverLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameOverLayer.h; sourceTree = "<group>"; };
+		7F0FC535184C573500EFCFE0 /* GameOverLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameOverLayer.m; sourceTree = "<group>"; };
+		7F0FC537184C5A3900EFCFE0 /* projectile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = projectile.png; path = Resources/projectile.png; sourceTree = "<group>"; };
+		7F0FC539184C5B7C00EFCFE0 /* Projectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Projectile.h; sourceTree = "<group>"; };
+		7F0FC53A184C5B7C00EFCFE0 /* Projectile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Projectile.m; sourceTree = "<group>"; };
 		7F3B49D31847FBB000E47114 /* chipmunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chipmunk.h; sourceTree = "<group>"; };
 		7F3B49D41847FBB000E47114 /* chipmunk_ffi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chipmunk_ffi.h; sourceTree = "<group>"; };
 		7F3B49D51847FBB000E47114 /* chipmunk_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chipmunk_private.h; sourceTree = "<group>"; };
@@ -644,6 +657,12 @@
 				7FF5DAEE1845A59400D3CFD6 /* Resources */,
 				7FF5DB061845A59400D3CFD6 /* libs */,
 				7FF5DC7A1845A59700D3CFD6 /* Supporting Files */,
+				7F0FC52F184C059300EFCFE0 /* Zombie.h */,
+				7F0FC530184C059300EFCFE0 /* Zombie.m */,
+				7F0FC534184C573400EFCFE0 /* GameOverLayer.h */,
+				7F0FC535184C573500EFCFE0 /* GameOverLayer.m */,
+				7F0FC539184C5B7C00EFCFE0 /* Projectile.h */,
+				7F0FC53A184C5B7C00EFCFE0 /* Projectile.m */,
 			);
 			path = zombieShooter;
 			sourceTree = "<group>";
@@ -651,6 +670,8 @@
 		7FF5DAEE1845A59400D3CFD6 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7F0FC537184C5A3900EFCFE0 /* projectile.png */,
+				7F0FC532184C110500EFCFE0 /* zombie.png */,
 				7FF5DD011845B2C100D3CFD6 /* map.tmx */,
 				7FF5DCF31845B2AE00D3CFD6 /* hit.caf */,
 				7FF5DCF41845B2AE00D3CFD6 /* meta_tiles.png */,
@@ -1112,6 +1133,8 @@
 				7FF5DD001845B2AF00D3CFD6 /* tmw_desert_spacing.png in Resources */,
 				7FF5DD021845B2C100D3CFD6 /* map.tmx in Resources */,
 				7F0B285518463A16001394A6 /* meta_tiles.png in Resources */,
+				7F0FC533184C110500EFCFE0 /* zombie.png in Resources */,
+				7F0FC538184C5A3900EFCFE0 /* projectile.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1237,6 +1260,9 @@
 				7FF5DC961845A60000D3CFD6 /* Graph.m in Sources */,
 				7FF5DC971845A60000D3CFD6 /* HelloWorldLayer.m in Sources */,
 				7FF5DC981845A60000D3CFD6 /* MyPoint.m in Sources */,
+				7F0FC531184C059300EFCFE0 /* Zombie.m in Sources */,
+				7F0FC536184C573500EFCFE0 /* GameOverLayer.m in Sources */,
+				7F0FC53B184C5B7C00EFCFE0 /* Projectile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

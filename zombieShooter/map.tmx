@@ -153,6 +153,13 @@
  </layer>
  <objectgroup name="Objects" width="59" height="50">
   <object name="SpawnPoint" x="503" y="1166"/>
+  <object name="ZombieInitial_0_2" x="301" y="912"/>
+  <object name="ZombieInitial_1_2" x="815" y="1424"/>
+  <object name="ZombieInitial_2_1" x="206" y="397"/>
+  <object name="ZombieInitial_3_2" x="243" y="118"/>
+  <object name="ZombieInitial_4_1" x="1649" y="210"/>
+  <object name="ZombieInitial_5_3" x="1714" y="788"/>
+  <object name="ZombieInitial_6_2" x="1682" y="1396"/>
  </objectgroup>
  <layer name="Meta" width="59" height="50">
   <data encoding="base64" compression="zlib">

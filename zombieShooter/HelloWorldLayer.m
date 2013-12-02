@@ -1,7 +1,9 @@
 #import "HelloWorldLayer.h"
 #import "AppDelegate.h"
 #import "ChipmunkAutoGeometry.h"
-
+#import "Zombie.h"
+#import "GameOverLayer.h"
+#import "Projectile.h"
 
 @interface HelloWorldLayer()
 
@@ -41,7 +43,7 @@
 		_space = [[ChipmunkSpace alloc] init];
 		//_space.gravity = cpv(0.0f, -400.0f);
         
-        CCTMXObjectGroup *objectGroup = [_tileMap objectGroupNamed:@"Objects"];
+        CCTMXObjectGroup * objectGroup = [_tileMap objectGroupNamed:@"Objects"];
         NSAssert(objectGroup != nil, @"tile map has no objects object layer");
         
         NSDictionary *spawnPoint = [objectGroup objectNamed:@"SpawnPoint"];
@@ -55,18 +57,63 @@
         
         [self createPlayer:y x:x];
         [self createTerrainGeometry];
-        
+                
         [self setViewPointCenter:_player.position];
-        
-        _nextPositions = [[NSMutableArray alloc] init];
-        
+                
         // schedule updates, which also steps the physics space:
         [self scheduleUpdate];
         
-        //[self initializeGraph];
-        //[self makePlayerMove];
+        //This initializes the points where the zombies will be thrown from
+        [self initializeZombiesInitialPointsFrom: objectGroup];
+        
+        _zombies = [[NSMutableArray alloc] init];
+        _projectiles = [[NSMutableArray alloc] init];
+        
+        _timer = 0;
+        
+        [self initializeGraph];
     }
     return self;
+}
+
+-(void) initializeZombiesInitialPointsFrom: (CCTMXObjectGroup *) objectGroup
+{
+    _zombiesInitialPoints1 = [[NSMutableArray alloc] init];
+    _zombiesInitialPoints2 = [[NSMutableArray alloc] init];
+    _zombiesInitialPoints3 = [[NSMutableArray alloc] init];
+    
+    [self initializeZombieInitialPointWithName: @"ZombieInitial_0_2" andPriority: 2 from: objectGroup];
+    [self initializeZombieInitialPointWithName: @"ZombieInitial_1_2" andPriority: 2 from: objectGroup];
+    [self initializeZombieInitialPointWithName: @"ZombieInitial_2_1" andPriority: 1 from: objectGroup];
+    [self initializeZombieInitialPointWithName: @"ZombieInitial_3_2" andPriority: 2 from: objectGroup];
+    [self initializeZombieInitialPointWithName: @"ZombieInitial_4_1" andPriority: 1 from: objectGroup];
+    [self initializeZombieInitialPointWithName: @"ZombieInitial_5_3" andPriority: 3 from: objectGroup];
+    [self initializeZombieInitialPointWithName: @"ZombieInitial_6_2" andPriority: 2 from: objectGroup];
+}
+
+-(void) initializeZombieInitialPointWithName: (NSString *) name andPriority: (int) priority from: (CCTMXObjectGroup *) objectGroup
+{
+    NSMutableArray * array;
+    
+    switch (priority) {
+        case 1:
+            array = _zombiesInitialPoints1;
+            break;
+        case 2:
+            array = _zombiesInitialPoints2;
+            break;
+        case 3:
+            array = _zombiesInitialPoints3;
+            break;
+        default:
+            break;
+    }
+    
+    NSDictionary *spawnPoint = [objectGroup objectNamed:name];
+    int x = [spawnPoint[@"x"] integerValue];
+    int y = [spawnPoint[@"y"] integerValue];
+    
+    [array addObject: [[MyPoint alloc] initWithX:x andY:y]];
 }
 
 - (void)createPlayer:(int)y x:(int)x
@@ -149,6 +196,14 @@
     }
 }
 
+- (void) triggerProjectiles
+{
+    int size = _projectiles.count, i = 0;
+    for (i=0; i < size; i++ ){
+        [[_projectiles objectAtIndex:i] trigger];
+    }
+}
+
 -(void)update:(ccTime)dt
 {
     // update player motion based on last touch, if we have our finger down:
@@ -162,25 +217,123 @@
     
     //update camera
     [self setViewPointCenter:_playerBody.pos];
-}
-
-- (void) makePlayerMove
-{
-    AStar * aStar = [[AStar alloc] initWithGraph: _graph ];
-
-    _nextPositions = [aStar executeAlgorithmFromX: 34 andY: 34 toX: 44 andY: 44];
     
-    [self schedule:@selector(move) interval:1];
+    [self updateCollisions];
+    [self addZombie];
+    [self moveCurrentZombies];
+    [self triggerProjectiles];
+    
+    _timer++; //We wait 150 cilces of the scheduler and update the paths of the zombies
 }
 
-- (void) move
+- (NSMutableArray *) analizeZombiesToDeleteWithProjectile: (Projectile *) projectile
 {
-    if ( [_nextPositions count] == 0 ) {
-        return;
+    NSMutableArray * zombiesToDelete = [[NSMutableArray alloc] init];
+    
+    for (Zombie * zombie in _zombies) {
+        if (CGRectIntersectsRect(projectile.projectile.boundingBox, zombie.zombie.boundingBox)) {
+            [zombiesToDelete addObject:zombie];
+        }
     }
     
-    MyPoint * point = [_nextPositions objectAtIndex:[_nextPositions count]-1];
-    [_nextPositions removeLastObject];
+    for (Zombie * zombie in zombiesToDelete) {
+        [_zombies removeObject:zombie];
+        [self removeChild:zombie.zombie cleanup:YES];
+    }
+    
+    return zombiesToDelete;
+}
+
+-(void) analizeZombieWithPlayerCollision
+{
+    for (Zombie * zombie in _zombies) {
+        if (CGRectIntersectsRect(_player.boundingBox, zombie.zombie.boundingBox)) {
+            CCScene * gameOverScene = [GameOverLayer scene];
+            [[CCDirector sharedDirector] replaceScene:gameOverScene];
+        }
+    }
+}
+
+-(void) updateCollisions
+{
+    NSMutableArray *projectilesToDelete = [[NSMutableArray alloc] init];
+    for (Projectile * projectile in _projectiles) {
+        NSMutableArray * zombiesToDelete = [self analizeZombiesToDeleteWithProjectile: projectile];
+        
+        if (zombiesToDelete.count > 0 ) {
+            [projectilesToDelete addObject:projectile];
+        }
+    }
+    
+    for (Projectile *projectile in projectilesToDelete) {
+        [_projectiles removeObject:projectile];
+        [self removeChild:projectile.projectile cleanup:YES];
+    }
+    
+    [self analizeZombieWithPlayerCollision];
+}
+
+- (void) addZombie
+{
+    if ( [self canCreateZombie] ) {
+        NSMutableArray * array = [self getZombiesArray];
+        int i = arc4random() % array.count;
+        
+        MyPoint * point = [array objectAtIndex:i];
+        
+        printf(" [LOG] -Creating monster in point (%d,%d)\n", point.x, point.y);
+        
+        Zombie * zombie = [[Zombie alloc] initZombieAtX:point.x y:point.y inSpace:_space graph: _graph andLayer: self];
+        CCPhysicsSprite * zombieSprite = [zombie createSprite];
+        
+        // TODO This should work uncommented
+        //[zombie updatePathToX: _player.position.x andY: _player.position.y];
+        
+        [self addChild:zombieSprite];
+        [_zombies addObject:zombie];
+    }
+}
+
+- (NSMutableArray *) getZombiesArray
+{
+    int num = arc4random() % 100;
+    if ( num < 60 ) {
+        return _zombiesInitialPoints3;
+    } else if ( num < 85 ) {
+        return _zombiesInitialPoints2;
+    } else {
+        return _zombiesInitialPoints1;
+    }
+}
+
+- (Boolean) canCreateZombie
+{
+    int num = arc4random() % 100;
+    return num > 95;
+}
+
+- (void) moveCurrentZombies
+{
+    int size = _zombies.count, i=0;
+    [self updateZombiesPath];
+    for (i = 0; i < size; i++) {
+        [[_zombies objectAtIndex:i] moveNextPosition];
+    }
+}
+
+- (void) updateZombiesPath
+{
+    int i;
+    if ( _timer > 150) {
+        _timer = 0;
+        
+        for (i = 0; i < _zombies.count; i++) {
+            Zombie * zombie = [_zombies objectAtIndex:i];
+            // TODO This should work uncommented
+            //[zombie updatePathToX: _player.position.x andY: _player.position.y];
+        }
+        
+    }
 }
 
 - (void) initializeGraph
@@ -189,8 +342,7 @@
     _graph = [[Graph alloc] initWithCollumns:_tileMap.mapSize.width andRows:_tileMap.mapSize.height];
     for ( x = 0; x < _tileMap.mapSize.width; x++) {
         for ( y = 0; y < _tileMap.mapSize.height; y++) {
-            NSDictionary * props = [_tileMap propertiesForGID: [_background tileGIDAt: CGPointMake(x, y)]];
-            if ( ! [[props objectForKey:@"walkable"] isEqualToString:@"NO"] ){
+            if ( [self isNodeWalkableAtX:x andY:y] ) {
                 [_graph addNodeWithX:x andY:y];
             }
         }
@@ -209,8 +361,8 @@
 
 - (Boolean) isNodeWalkableAtX: (int) x andY: (int) y
 {
-    NSDictionary * props = [_tileMap propertiesForGID: [_background tileGIDAt: CGPointMake(x, y)]];
-    return  ! [[props objectForKey:@"walkable"] isEqualToString:@"NO"];
+    NSDictionary *properties = [_tileMap propertiesForGID:[_meta tileGIDAt:ccp(x, y)]];
+    return ! [[properties valueForKey:@"Collidable"] isEqualToString:@"true"];
 }
 
 - (NSMutableArray *) getSiblingWalkableNodesFromX: (int) x andY: (int) y
@@ -282,11 +434,20 @@
 	_player.position = position;
 }
 
+-(void) addProjectileTo: (CGPoint) location
+{
+    Projectile * projectile = [[Projectile alloc] initFromX: _player.position.x y: _player.position.y toX: location.x y: location.y inSpace:_space andLayer:self];
+    [self addChild:[projectile createSprite]];
+    [_projectiles addObject:projectile];
+}
+
 -(void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
 {
     CGPoint touchLocation = [touch locationInView:touch.view];
     touchLocation = [[CCDirector sharedDirector] convertToGL:touchLocation];
     touchLocation = [self convertToNodeSpace:touchLocation];
+    
+    [self addProjectileTo: touchLocation];
     
     NSLog(@"[LOG] - Touch ended at (%f,%f)\n", touchLocation.x, touchLocation.y);
     

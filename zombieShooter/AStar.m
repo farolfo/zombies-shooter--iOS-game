@@ -11,10 +11,11 @@
 
 @implementation AStar
 
-- (id) initWithGraph: (Graph *) graph
+- (id) initWithGraph: (Graph *) graph andTileSize: (CGSize) tileSize
 {
     if ( self = [super init] ) {
         self.graph = graph;
+        self.tileSize = tileSize;
     }
     return self;
 }
@@ -52,12 +53,31 @@
     return xDiff + yDiff;
 }
 
+- (int) numberFromPixelInX: (int) num
+{
+    return floor(num / self.tileSize.width);
+}
+
+- (int) numberFromPixelInY: (int) num
+{
+    return 49 - floor(num / self.tileSize.height);
+}
+
 - (NSMutableArray *) executeAlgorithmFromX: (int) x1 andY: (int) y1 toX: (int) x2 andY: (int) y2
 {
     int i = 0;
-     
+    
+    x1 = [self numberFromPixelInX: x1];
+    x2 = [self numberFromPixelInX: x2];
+    y1 = [self numberFromPixelInY: y1];
+    y2 = [self numberFromPixelInY: y2];
+    
+    printf("x1: %d - x2: %d - y1: %d - y2: %d\n", x1, x2, y1, y2);
+    
     Node * nodeInit = [self.graph getNodeWithX:x1 andY:y1];
     Node * nodeDest = [self.graph getNodeWithX:x2 andY:y2];
+    
+    printf("nodes are %d, %d", nodeInit, nodeDest);
     
     NSMutableArray * openList = [[NSMutableArray alloc] init];
     NSMutableArray * closedList = [[NSMutableArray alloc] init];
@@ -70,6 +90,9 @@
     
     while ( ( node = [self getLowestNodeIn: openList] ) != nil && node != nodeDest ) {
         [openList removeObject:node];
+        if ( [node isKindOfClass: [NSNull class] ] ) {
+            continue;
+        }
         [closedList addObject:node];
         NSMutableArray * neighbours = [node getNeighbours];
         int size = [neighbours count];
@@ -84,17 +107,13 @@
                     neighbour.g = node.g + 1;
                     neighbour.h = [self getManhattanDistanceFromX1: neighbour.x y1: neighbour.y toX2: nodeDest.x y2: nodeDest.y];
                 }
-            } else {
+            } else if ( ! [neighbour isKindOfClass: [NSNull class] ] ) {
                 [openList addObject:neighbour];
                 neighbour.parent = node;
                 neighbour.g = node.g + 1;
                 neighbour.h = [self getManhattanDistanceFromX1: neighbour.x y1: neighbour.y toX2: nodeDest.x y2: nodeDest.y];
             }
         }
-    }
-    
-    if ( node == nil ) {
-        return nil;
     }
     
     NSMutableArray * path = [[NSMutableArray alloc] init];

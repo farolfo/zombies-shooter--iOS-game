@@ -4,7 +4,7 @@
 //#import "ChipmunkPro/ObjectiveChipmunk.h"
 #import "cocos2d.h"
 #import "ObjectiveChipmunk.h"
-#import "CCPhysicsSprite.h"
+//#import "CCPhysicsSprite.h"
 #import "Graph.h"
 #import "AStar.h"
 #import "MyPoint.h"
@@ -21,14 +21,22 @@
     @property (strong) ChipmunkBody * targetPointBody;
     @property (strong) ChipmunkBody * playerBody;
 
+    @property (strong) NSMutableArray * zombies;
+    @property (strong) NSMutableArray * projectiles;
+
     @property (strong) ChipmunkSpace * space;
 
-    @property (atomic) BOOL * isTouching;
+    @property (nonatomic) int timer;
+    @property (nonatomic) BOOL * isTouching;
 
     @property CGPoint lastTouchLocation;
     @property CGPoint lastTargetPoint;
 
     @property (strong) NSMutableArray * nextPositions;
+
+    @property (strong) NSMutableArray * zombiesInitialPoints1;
+    @property (strong) NSMutableArray * zombiesInitialPoints2;
+    @property (strong) NSMutableArray * zombiesInitialPoints3;
 
 // returns a CCScene that contains the HelloWorldLayer as the only child
 +(CCScene *) scene;

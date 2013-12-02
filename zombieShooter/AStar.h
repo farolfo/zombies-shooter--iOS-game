@@ -10,10 +10,10 @@
 #import "Graph.h"
 
 @interface AStar : NSObject
-
+@property (nonatomic) CGSize tileSize;
 @property (nonatomic) Graph * graph;
 
-- (id) initWithGraph: (Graph *) graph;
+- (id) initWithGraph: (Graph *) graph andTileSize: (CGSize) tileSize;
 
 // Returns an ordered set of CGPoints that are every move that needs to be done
 // If destiny is not reachable, returns nil
